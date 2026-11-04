@@ -1,0 +1,14 @@
+# --- Model weights (2.5 GB) - re-download with server\setup.bat -----------
+models/
+
+# --- llama.cpp binaries - re-download with server\setup.bat ---------------
+bin/
+
+# --- OpenCode binary (253 MB) - exceeds GitHub's 100 MB file limit --------
+opencode/opencode.exe
+
+# --- Runtime noise --------------------------------------------------------
+.opencode/
+*.log
+Thumbs.db
+desktop.ini

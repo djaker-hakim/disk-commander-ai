@@ -37,6 +37,16 @@ there is loaded. If it's missing (fresh USB), the launcher copies it from
 1. Run **`server\setup.bat`** — downloads llama.cpp (AVX2 build) + the model (~2.5 GB)
 2. Then follow "How to start" above.
 
+### On Linux / macOS
+
+Download just the model (default: Qwen3-4B-Instruct-2507 Q4_K_M) with:
+
+```bash
+server/download-model.sh                 # default model
+server/download-model.sh Q8_0            # different quant of the same repo
+server/download-model.sh <repo-id> <file.gguf>   # any other model
+```
+
 ## Notes
 
 - All scripts use paths relative to their own location (`%~dp0` / `$PSScriptRoot`),

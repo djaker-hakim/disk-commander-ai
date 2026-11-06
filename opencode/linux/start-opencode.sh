@@ -30,12 +30,22 @@ cd "$WORKSPACE_DIR"
 
 # Seed live config if missing
 if [ ! -f "opencode.json" ]; then
-    cp "$OPENCODE_DIR/opencode.example.json" "opencode.json"
+    cp "$SCRIPT_DIR/opencode.example.json" "opencode.json"
     echo "Created opencode.json from opencode.example.json"
+# Repair a config seeded on Windows (powershell agent): use the Linux one.
+elif grep -q '"powershell"' "opencode.json" && ! grep -q '"bash"' "opencode.json"; then
+    cp "$SCRIPT_DIR/opencode.example.json" "opencode.json"
+    echo "Replaced Windows (powershell) config with the Linux version"
 fi
 
 echo "Working directory: $(pwd)"
 echo "Using OpenCode: $OPENCODE_BIN"
+echo
+echo "Agents: bash  (default - shell only)"
+echo "        files (read/write only, no shell)"
+echo
+echo "  start-opencode.sh                   - bash agent"
+echo "  start-opencode.sh --agent files     - file agent"
 echo
 
 exec "$OPENCODE_BIN" "$@"

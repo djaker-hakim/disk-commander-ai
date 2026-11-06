@@ -7,9 +7,8 @@ Works on **Windows** (`*.bat` / `*.ps1`) and **Linux** (`*.sh`) — each platfor
 
 | Folder | What it is |
 |---|---|
-| `opencode/windows\` | OpenCode for Windows — `opencode.exe` + `start-opencode.bat` |
-| `opencode/linux/` | OpenCode for Linux — `opencode` + `start-opencode.sh` |
-| `opencode/opencode.example.json` | Shared config template (both platforms use it) |
+| `opencode/windows\` | OpenCode for Windows — `opencode.exe`, `start-opencode.bat`, `opencode.example.json` (PowerShell agent) |
+| `opencode/linux/` | OpenCode for Linux — `opencode`, `start-opencode.sh`, `opencode.example.json` (bash agent) |
 | `server/windows\` | llama.cpp for Windows — `bin\`, `start-server.bat`, `launch-server.ps1`, `setup.bat`, `setup.ps1`, `download-model.ps1` |
 | `server/linux/` | llama.cpp for Linux — `bin/`, `start-server.sh`, `setup.sh`, `download-model.sh` |
 | `server/models\` | Shared GGUF model storage (used by both platforms) |
@@ -57,8 +56,13 @@ launcher pointing to it). It:
    (or add `--standalone`)
 
 The launcher automatically runs OpenCode inside `workspace/`, so the `opencode.json`
-there is loaded. If it's missing (fresh USB), the launcher copies it from
-`opencode/opencode.example.json` for you.
+there is loaded. If it's missing (fresh USB), the launcher copies it from the
+platform template — `opencode/linux/opencode.example.json` on Linux,
+`opencode/windows/opencode.example.json` on Windows. Each template carries the
+matching shell agent (**bash** on Linux, **powershell** on Windows), both with
+the platform-neutral `files` agent. If the USB is used on both platforms, each
+launcher detects a config seeded on the *other* platform and swaps in the
+correct one automatically.
 
 ## Fresh setup (new machine / new USB)
 

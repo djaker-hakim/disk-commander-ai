@@ -37,11 +37,24 @@ rem get their files from there too.
 if not exist "%~dp0..\..\workspace" mkdir "%~dp0..\..\workspace"
 cd /d "%~dp0..\..\workspace"
 
-rem First run on a fresh USB: seed the live config from the template.
+rem First run on a fresh USB: seed the live config from the Windows template.
 if not exist "opencode.json" (
-    copy /y "%~dp0..\opencode.example.json" "opencode.json" >nul
+    copy /y "%~dp0opencode.example.json" "opencode.json" >nul
     echo Created opencode.json from opencode.example.json
+    goto :config
 )
+
+rem Repair a config seeded on Linux (bash agent): use the Windows one.
+findstr /c:"\"bash\"" "opencode.json" >nul 2>&1
+if not errorlevel 1 (
+    findstr /c:"\"powershell\"" "opencode.json" >nul 2>&1
+    if errorlevel 1 (
+        copy /y "%~dp0opencode.example.json" "opencode.json" >nul
+        echo Replaced Linux ^(bash^) config with the Windows version
+    )
+)
+
+:config
 
 echo Working directory: %CD%
 echo Using: %OPENCODE_EXE%

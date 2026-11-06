@@ -1,0 +1,64 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "providers": {
+    "local": {
+      "name": "llama.cpp (local)",
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "http://127.0.0.1:8090/v1"
+      },
+      "models": {
+        "qwen3-4b-instruct": {
+          "modelID": "qwen3-4b-instruct",
+          "name": "Qwen3 4B Instruct 2507 (8K)",
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 8192,
+            "output": 1024
+          }
+        }
+      }
+    }
+  },
+  "model": "local/qwen3-4b-instruct",
+  "default_agent": "bash",
+  "tool_output": {
+    "max_lines": 150,
+    "max_bytes": 6000
+  },
+  "compaction": {
+    "auto": true,
+    "keep": {
+      "tokens": 700
+    },
+    "buffer": 512
+  },
+  "agents": {
+    "bash": {
+      "description": "Bash only: runs shell commands. Cannot read, write, or edit files.",
+      "mode": "all",
+      "system": "You are a Linux assistant with a tool that executes bash commands.\nRules:\n- Always EXECUTE commands with the tool. Never just show commands as text.\n- Never invent output. Only report what the tool actually returned.\n- Do not use PowerShell commands (Get-*, Set-*).\n- Quote paths that contain spaces.\n- After saving a file, read it back with cat to confirm it exists.",
+      "permissions": [
+        { "action": "*", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "*", "effect": "allow" }
+      ]
+    },
+    "files": {
+      "description": "File tools only: reads, searches, and edits files. Cannot run shell commands.",
+      "mode": "all",
+      "system": "You are a file assistant. You can read, search, write, and edit files. You cannot run shell commands.",
+      "permissions": [
+        { "action": "*", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "allow" },
+        { "action": "read", "resource": "*", "effect": "allow" },
+        { "action": "glob", "resource": "*", "effect": "allow" },
+        { "action": "grep", "resource": "*", "effect": "allow" },
+        { "action": "edit", "resource": "*", "effect": "allow" }
+      ]
+    }
+  }
+}

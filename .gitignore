@@ -6,9 +6,12 @@ bin/
 
 # --- OpenCode binary (253 MB) - exceeds GitHub's 100 MB file limit --------
 opencode/opencode.exe
+opencode/opencode
+opencode/opencode-*
 
 # --- Runtime noise --------------------------------------------------------
 .opencode/
 *.log
+server/server.pid
 Thumbs.db
 desktop.ini

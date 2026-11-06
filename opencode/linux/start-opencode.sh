@@ -32,10 +32,15 @@ cd "$WORKSPACE_DIR"
 if [ ! -f "opencode.json" ]; then
     cp "$SCRIPT_DIR/opencode.example.json" "opencode.json"
     echo "Created opencode.json from opencode.example.json"
-# Repair a config seeded on Windows (powershell agent): use the Linux one.
-elif grep -q '"powershell"' "opencode.json" && ! grep -q '"bash"' "opencode.json"; then
+elif ! grep -q '"bash"' "opencode.json"; then
+    # Config predates the bash agent: use the full Linux template.
     cp "$SCRIPT_DIR/opencode.example.json" "opencode.json"
-    echo "Replaced Windows (powershell) config with the Linux version"
+    echo "Replaced Windows (powershell-only) config with the Linux version"
+elif grep -q '"default_agent": *"powershell"' "opencode.json"; then
+    # The shipped config defaults to the Windows (powershell) agent; as the
+    # default on Linux must be bash. The bash agent is already defined.
+    sed -i 's/"default_agent": *"powershell"/"default_agent": "bash"/' "opencode.json"
+    echo "Set default agent to bash (was powershell)"
 fi
 
 echo "Working directory: $(pwd)"

@@ -47,6 +47,15 @@
         { "action": "shell", "resource": "*", "effect": "allow" }
       ]
     },
+    "bash": {
+      "description": "Bash only: runs shell commands (bash-compatible shell, e.g. Git Bash/WSL on Windows). Cannot read, write, or edit files.",
+      "mode": "all",
+      "system": "You are an assistant with a tool that executes bash commands.\nRules:\n- Always EXECUTE commands with the tool. Never just show commands as text.\n- Never invent output. Only report what the tool actually returned.\n- Do not use PowerShell commands (Get-*, Set-*).\n- Quote paths that contain spaces.\n- After saving a file, read it back with cat to confirm it exists.",
+      "permissions": [
+        { "action": "*", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "*", "effect": "allow" }
+      ]
+    },
     "files": {
       "description": "File tools only: reads, searches, and edits files. Cannot run shell commands.",
       "mode": "all",

@@ -60,9 +60,11 @@ echo Working directory: %CD%
 echo Using: %OPENCODE_EXE%
 echo.
 echo Agents: powershell (default - shell only)
-echo         files      (read/write only, no shell)
+echo         bash      (shell only, bash syntax - Git Bash/WSL)
+echo         files     (read/write only, no shell)
 echo.
 echo   start-opencode.bat                   - PowerShell agent
+echo   start-opencode.bat --agent bash      - bash agent
 echo   start-opencode.bat --agent files     - file agent
 echo.
 

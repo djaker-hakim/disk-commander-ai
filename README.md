@@ -58,11 +58,21 @@ launcher pointing to it). It:
 The launcher automatically runs OpenCode inside `workspace/`, so the `opencode.json`
 there is loaded. If it's missing (fresh USB), the launcher copies it from the
 platform template — `opencode/linux/opencode.example.json` on Linux,
-`opencode/windows/opencode.example.json` on Windows. Each template carries the
-matching shell agent (**bash** on Linux, **powershell** on Windows), both with
-the platform-neutral `files` agent. If the USB is used on both platforms, each
-launcher detects a config seeded on the *other* platform and swaps in the
-correct one automatically.
+`opencode/windows/opencode.example.json` on Windows.
+
+The config that ships in `workspace/` bases itself on the **Windows** setup,
+so `powershell` is the default agent. Both templates carry the shell agents
+(**powershell** + **bash**) and the platform-neutral `files` agent, so
+`--agent bash` works on any platform.
+
+On **Linux**, the launcher makes `bash` the default automatically: if the live
+config still has `"default_agent": "powershell"` it rewrites it to `bash`
+in place (the bash agent is already defined in the config). You can also:
+
+- launch with an explicit agent: `./opencode/linux/start-opencode.sh --agent bash`
+- or replace the live config yourself:
+  `cp opencode/linux/opencode.example.json workspace/opencode.json`
+  to get a pure-Linux config with `bash` as default.
 
 ## Fresh setup (new machine / new USB)
 

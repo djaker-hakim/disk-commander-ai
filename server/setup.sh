@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Downloads llama.cpp (Linux x64 build) and the Qwen3-4B-Instruct-2507
-# GGUF model into bin/ and models/.
+# GGUF model into bin/linux and models/.
 # Windows equivalent: setup.ps1
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BIN_DIR="$SCRIPT_DIR/bin"
+BIN_DIR="$SCRIPT_DIR/bin/linux"
 MODELS_DIR="$SCRIPT_DIR/models"
 MODEL_NAME="Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
 MODEL_URL="https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/main/$MODEL_NAME"
@@ -30,41 +30,27 @@ mkdir -p "$BIN_DIR" "$MODELS_DIR"
 if [ -x "$BIN_DIR/llama-server" ]; then
     echo "[1/2] llama.cpp already present."
 else
-    echo "[1/2] Resolving latest llama.cpp Linux release..."
-    JSON="$(curl -fsSL -H 'User-Agent: opencode' \
-        'https://api.github.com/repos/ggml-org/llama.cpp/releases?per_page=10')"
-
-    # Official Linux builds are published as llama-bNNNNN-bin-ubuntu-x64.zip.
-    ASSET_NAME="$(printf '%s' "$JSON" | grep -oE '"name": *"llama-[^"]*-bin-ubuntu-x64\.zip"' \
-        | head -n 1 | sed 's/.*: *"//; s/"$//')"
-    if [ -z "$ASSET_NAME" ]; then
+    echo "[1/2] Resolving latest llama.cpp Linux build..."
+    for rel in $(curl -fsSL -H 'User-Agent: opencode' \
+        'https://api.github.com/repos/ggml-org/llama.cpp/releases?per_page=15' \
+        | grep -Eo '"browser_download_url": *"[^"]*llama-[^"]*-bin-ubuntu-x64\.tar\.gz"' \
+        | sed 's/.*"https:/https:/; s/"$//'); do
+        URL="$rel"
+        break
+    done
+    if [ -z "${URL:-}" ]; then
         echo "No ubuntu-x64 asset found in recent llama.cpp releases." >&2
         exit 1
     fi
-    URL="https://github.com/ggml-org/llama.cpp/releases/latest/download/$ASSET_NAME"
 
-    ZIP="$SCRIPT_DIR/llama.zip"
-    echo "  Downloading $ASSET_NAME ..."
-    fetch "$URL" "$ZIP"
+    TGZ="$SCRIPT_DIR/llama.tar.gz"
+    echo "  Downloading $URL ..."
+    fetch "$URL" "$TGZ"
 
     echo "  Extracting..."
-    if command -v unzip >/dev/null 2>&1; then
-        unzip -oq "$ZIP" -d "$BIN_DIR"
-    else
-        # Fall back to Python's zipfile if unzip is not installed.
-        python3 -c "import zipfile,sys; zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])" "$ZIP" "$BIN_DIR"
-    fi
-    rm -f "$ZIP"
+    tar -xzf "$TGZ" -C "$BIN_DIR" --strip-components=1
+    rm -f "$TGZ"
     chmod +x "$BIN_DIR"/llama-* 2>/dev/null || true
-
-    # Flatten the archive if it nested everything in a single subfolder.
-    if [ ! -x "$BIN_DIR/llama-server" ]; then
-        INNER="$(find "$BIN_DIR" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-        if [ -n "$INNER" ]; then
-            mv "$INNER"/* "$INNER"/.[!.]* "$BIN_DIR" 2>/dev/null || mv "$INNER"/* "$BIN_DIR"
-            rmdir "$INNER" 2>/dev/null || true
-        fi
-    fi
 
     if [ -x "$BIN_DIR/llama-server" ]; then
         echo "[1/2] llama.cpp ready."

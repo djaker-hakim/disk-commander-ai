@@ -5,7 +5,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+OPENCODE_DIR="$(dirname "$SCRIPT_DIR")"        # opencode/
+ROOT_DIR="$(dirname "$OPENCODE_DIR")"          # repo root
 WORKSPACE_DIR="$ROOT_DIR/workspace"
 
 # Locate opencode binary
@@ -29,7 +30,7 @@ cd "$WORKSPACE_DIR"
 
 # Seed live config if missing
 if [ ! -f "opencode.json" ]; then
-    cp "$SCRIPT_DIR/opencode.example.json" "opencode.json"
+    cp "$OPENCODE_DIR/opencode.example.json" "opencode.json"
     echo "Created opencode.json from opencode.example.json"
 fi
 

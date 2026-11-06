@@ -34,12 +34,12 @@ exit /b 1
 rem ==== Run from the workspace folder ====================================
 rem OpenCode loads opencode.json from the working directory, and sessions
 rem get their files from there too.
-if not exist "%~dp0..\workspace" mkdir "%~dp0..\workspace"
-cd /d "%~dp0..\workspace"
+if not exist "%~dp0..\..\workspace" mkdir "%~dp0..\..\workspace"
+cd /d "%~dp0..\..\workspace"
 
 rem First run on a fresh USB: seed the live config from the template.
 if not exist "opencode.json" (
-    copy /y "%~dp0opencode.example.json" "opencode.json" >nul
+    copy /y "%~dp0..\opencode.example.json" "opencode.json" >nul
     echo Created opencode.json from opencode.example.json
 )
 

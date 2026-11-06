@@ -19,7 +19,7 @@ if not errorlevel 1 (
 
 rem ---- 2. Start the server in its own (minimized) window ------------------
 echo [1/2] Starting llama.cpp server in a separate window...
-start "llama.cpp server (diskCommander)" /min cmd /c ""%ROOT%server\start-server.bat""
+start "llama.cpp server (diskCommander)" /min cmd /c ""%ROOT%server\windows\start-server.bat""
 
 echo       Waiting for the model to load...
 set /a tries=0
@@ -40,7 +40,7 @@ goto :wait-loop
 :server-ready
 echo [2/2] Starting OpenCode in the workspace...
 echo.
-call "%ROOT%opencode\start-opencode.bat"
+call "%ROOT%opencode\windows\start-opencode.bat"
 
 echo.
 echo OpenCode closed.

@@ -11,7 +11,8 @@
 #>
 
 $Root        = $PSScriptRoot
-$ModelPath   = Join-Path $Root "models\Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
+$ServerDir   = Split-Path $Root -Parent
+$ModelPath   = Join-Path $ServerDir "models\Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
 $LlamaServer = Join-Path $Root "bin\llama-server.exe"
 $Port        = 8090
 $CtxSize     = 8192

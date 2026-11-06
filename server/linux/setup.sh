@@ -5,9 +5,10 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BIN_DIR="$SCRIPT_DIR/bin/linux"
-MODELS_DIR="$SCRIPT_DIR/models"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"        # server/linux
+SERVER_DIR="$(dirname "$SCRIPT_DIR")"              # server/
+BIN_DIR="$SCRIPT_DIR/bin"
+MODELS_DIR="$SERVER_DIR/models"
 MODEL_NAME="Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
 MODEL_URL="https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/main/$MODEL_NAME"
 

@@ -4,13 +4,12 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MODEL_PATH="$SCRIPT_DIR/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
-# Locate llama-server binary: bundled Linux build, bin/, or PATH
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"          # server/linux
+SERVER_DIR="$(dirname "$SCRIPT_DIR")"                # server/
+MODEL_PATH="$SERVER_DIR/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
+# Look for llama-server binary in this platform's bin/ or in PATH
 LLAMA_SERVER=""
-if [ -x "$SCRIPT_DIR/bin/linux/llama-server" ]; then
-    LLAMA_SERVER="$SCRIPT_DIR/bin/linux/llama-server"
-elif [ -x "$SCRIPT_DIR/bin/llama-server" ]; then
+if [ -x "$SCRIPT_DIR/bin/llama-server" ]; then
     LLAMA_SERVER="$SCRIPT_DIR/bin/llama-server"
 elif command -v llama-server >/dev/null 2>&1; then
     LLAMA_SERVER="llama-server"

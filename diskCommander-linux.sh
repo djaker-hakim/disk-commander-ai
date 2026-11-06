@@ -30,7 +30,7 @@ if health_ok; then
 else
     echo "[1/2] Starting llama.cpp server in the background..."
 
-    bash "$SCRIPT_DIR/server/start-server.sh" >"$LOG_FILE" 2>&1 &
+    bash "$SCRIPT_DIR/server/linux/start-server.sh" >"$LOG_FILE" 2>&1 &
     if [ $? -ne 0 ]; then
         echo "ERROR: could not start server - see $LOG_FILE" >&2
         exit 1
@@ -54,7 +54,7 @@ fi
 # ---- 2. Start OpenCode in the workspace ------------------------------------
 echo "[2/2] Starting OpenCode in the workspace..."
 echo
-bash "$SCRIPT_DIR/opencode/start-opencode.sh" "$@"
+bash "$SCRIPT_DIR/opencode/linux/start-opencode.sh" "$@"
 exitcode=$?
 
 echo

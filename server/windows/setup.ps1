@@ -8,7 +8,8 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 $Root      = $PSScriptRoot
-$ModelDir  = Join-Path $Root "models"
+$ServerDir = Split-Path $Root -Parent
+$ModelDir  = Join-Path $ServerDir "models"
 $BinDir    = Join-Path $Root "bin"
 $ModelName = "Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
 $ModelPath = Join-Path $ModelDir $ModelName

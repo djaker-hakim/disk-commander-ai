@@ -29,8 +29,9 @@ case $# in
     *) echo "Usage: $0 [quant | file.gguf | <repo-id> <file.gguf>]" >&2; exit 1 ;;
 esac
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-MODELS_DIR="$SCRIPT_DIR/models"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"   # server/linux
+SERVER_DIR="$(dirname "$SCRIPT_DIR")"         # server/
+MODELS_DIR="$SERVER_DIR/models"
 OUT="$MODELS_DIR/$FILE"
 URL="https://huggingface.co/$REPO/resolve/main/$FILE"
 

@@ -1,8 +1,9 @@
 # Downloads Qwen3-4B-Instruct-2507 Q4_K_M into models\ with resume support.
 $ErrorActionPreference = "Stop"
 
-$Root      = $PSScriptRoot
-$ModelPath = Join-Path $Root "models\Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
+$Root        = $PSScriptRoot
+$ServerDir   = Split-Path $Root -Parent
+$ModelPath   = Join-Path $ServerDir "models\Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
 $ModelUrl  = "https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/main/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
 
 & curl.exe -L --fail --retry 3 -C - --silent --show-error -o $ModelPath $ModelUrl

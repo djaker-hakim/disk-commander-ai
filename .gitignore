@@ -4,10 +4,9 @@ models/
 # --- llama.cpp binaries - re-download with server\setup.bat ---------------
 bin/
 
-# --- OpenCode binary (253 MB) - exceeds GitHub's 100 MB file limit --------
-opencode/opencode.exe
-opencode/opencode
-opencode/opencode-*
+# --- OpenCode binary (~250 MB) - exceeds GitHub's 100 MB file limit --------
+opencode/windows/opencode.exe
+opencode/linux/opencode
 
 # --- Runtime noise --------------------------------------------------------
 .opencode/
